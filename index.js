@@ -156,11 +156,14 @@ module.exports = postcss.plugin("postcss-custom-properties", function(options) {
   }
 
   function plugin(style, result) {
+
+    var reportalConfig = {};
+
     var warnings = options.warnings === undefined ? true : options.warnings
     var variables = prefixVariables(options.variables)
     var strict = options.strict === undefined ? true : options.strict
     var appendVariables = options.appendVariables
-    var preserve = options.preserve
+    var preserve = options.preserve;
     var map = {}
     var importantMap = {}
 
@@ -250,7 +253,12 @@ module.exports = postcss.plugin("postcss-custom-properties", function(options) {
         return
       }
 
-      var resolved = resolveValue(value, map, result, decl)
+      var resolved = resolveValue(value, map, result, decl);
+
+
+      var last = resolved[resolved.length - 1];
+      reportalConfig[value] = last;
+
       if (!strict) {
         resolved = [resolved.pop()]
       }
@@ -286,6 +294,8 @@ module.exports = postcss.plugin("postcss-custom-properties", function(options) {
         style.append(container)
       }
     }
+	
+    result.reportalConfig = reportalConfig;
   }
 
   plugin.setVariables = setVariables
