@@ -257,7 +257,8 @@ module.exports = postcss.plugin("postcss-custom-properties", function(options) {
 
 
       var last = resolved[resolved.length - 1];
-      reportalConfig[value] = last;
+      var important = (decl.important ? ' !important' : '');
+      reportalConfig[value + important] = last + important;
 
       if (!strict) {
         resolved = [resolved.pop()]
@@ -294,7 +295,7 @@ module.exports = postcss.plugin("postcss-custom-properties", function(options) {
         style.append(container)
       }
     }
-	
+
     result.reportalConfig = reportalConfig;
   }
 
